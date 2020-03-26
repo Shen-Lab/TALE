@@ -47,9 +47,13 @@ In order to train the model, under src/, run:
 The above example is to train a model with 32 batch size, 100 epochs, 1e-3 learning rate, MFO ontology, 0 lambda value, with training data path at '../data/Gene_Ontology/EXP_Swiss_Prot/' and save the trained model in './log/'.
 
 ### Trained models:
-The trained modeles are in 'trained_models/'. (e.g. model1_mf* is the model1 on MFO)
-
+The trained models are in 'trained_models/'. (e.g. model1_mf* is the model1 on MFO)
 
 
 ## Citation
 TBD
+
+
+## Contact:
+Yang Shen: yshen@tamu.edu
+Yue Cao:  cyppsp@tamu.edu
