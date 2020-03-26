@@ -16,21 +16,27 @@ Transformer-based protein function Annotation with joint feature-Label Embedding
 where on=mf,bp,cc for MFO,BPO and CCO, respectively.
 
 ## For developers
-### File descriptions:
+### Training and test data:
 * Data/Gene_Ontology/EXP_Swiss_Prot/train_seq_mf: The training sequence file for MFO 
 * Data/Gene_Ontology/EXP_Swiss_Prot/train_label_mf: The training label file for MFO
 * Data/Gene_Ontology/EXP_Swiss_Prot/test_seq_mf: The test sequence file for MFO
 * Data/Gene_Ontology/EXP_Swiss_Prot/test_label_mf: The test label file for MFO
 * Data/Gene_Ontology/EXP_Swiss_Prot/mf_on_1.pickle: The ontology file for MFO
 
-### File formats:
-#### Sequence file:
+### Data formats:
+* The sequence file is a *list*, where each element is a directory having the follo 
 #### Label file
+* The label file is a *list*, where each element is a list containing the indexes of labels (GO terms).
 #### Ontology file:
+* The ontology file is a directory, where each key is a GO term (e.g. 'GO:0030234') in the ontology. Each value is also a directory containing the information for that key:
+** 'name': The name of the GO term
+** 'ind':  The index of this GO term
+** 'father': The parent GO terms
+** 'child': The children GO terms
 
 ### Training:
 
-### Evalutation:
+### Trained models:
 
 
 ## Citation
