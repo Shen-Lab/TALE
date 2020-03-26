@@ -2,4 +2,4 @@
 Transformer-based protein function Annotation with joint feature-Label Embedding
 
 
-![TALE Architecture](/ProteinFuncPred.pdf)
+![TALE Architecture](/ProteinFuncPred.png)
