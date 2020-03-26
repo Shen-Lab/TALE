@@ -24,15 +24,19 @@ where on=mf,bp,cc for MFO,BPO and CCO, respectively.
 * Data/Gene_Ontology/EXP_Swiss_Prot/mf_on_1.pickle: The ontology file for MFO
 
 ### Data formats:
-* The sequence file is a **list**, where each element is a directory having the follo 
+The sequence file is a **list**, where each element is a directory having the following information:
+* 'ID': The ID of the sequence in Swiss-Prot
+* 'ac': The acession number of the sequence in Swiss-Prot
+* 'date': The data of the sequence released in Swiss-Prot
+* 'GO':  The GO annotations of the sequence
 #### Label file
 * The label file is a **list**, where each element is a list containing the indexes of labels (GO terms).
 #### Ontology file:
-* The ontology file is a directory, where each key is a GO term (e.g. 'GO:0030234') in the ontology. Each value is also a directory containing the information for that key:
-..* 'name': The name of the GO term
-..* 'ind':  The index of this GO term
-..* 'father': The parent GO terms
-..* 'child': The children GO terms
+The ontology file is a directory, where each key is a GO term (e.g. 'GO:0030234') in the ontology. Each value is also a directory containing the information for that key:
+* 'name': The name of the GO term
+* 'ind':  The index of this GO term
+* 'father': The parent GO terms
+* 'child': The children GO terms
 
 ### Training:
 
