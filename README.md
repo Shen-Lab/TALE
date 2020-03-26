@@ -15,7 +15,10 @@ Transformer-based protein function Annotation with joint feature-Label Embedding
 * test_seq_mf:
 
 
-## How to use:
+## For users:
+### If you want to use TALE+ for prediction, prepare your seqeunces file in the fasta format and run:
+Inline 'python predict.py --input_seq $your_fasta_file --ontology $on
+where on=mf,bp,cc for MFO,BPO and CCP, respectively.
 
 
 
