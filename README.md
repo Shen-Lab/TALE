@@ -35,7 +35,8 @@ where on=mf,bp,cc for MFO,BPO and CCO, respectively.
 The sequence file is a list, where each element is a directory having the following information:
 * 'ID': The ID of the sequence in Swiss-Prot
 * 'ac': The acession number of the sequence in Swiss-Prot
-* 'date': The data of the sequence released in Swiss-Prot
+* 'date': The date of the sequence released in Swiss-Prot
+* 'seq': The amino acid sequence
 * 'GO':  The GO annotations of the sequence
 #### Label 
 * The label file is a list, where each element is a list containing the indexes of labels (GO terms).
