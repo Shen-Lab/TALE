@@ -1,8 +1,11 @@
 # TALE
-Transformer-based protein function Annotation with joint feature-Label Embedding
+Transformer-based protein function Annotation with joint sequence-Label Embedding
 
 
 ![TALE Architecture](/ProteinFuncPred.png)
+
+Input feature: sequence data
+Output label: hierarchical nodes on directed graphs
 
 ## Dependencies
 * TensorFlow >=1.13
