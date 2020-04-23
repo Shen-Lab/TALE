@@ -4,7 +4,11 @@ Transformer-based protein function Annotation with joint sequence-Label Embeddin
 
 ![TALE Architecture](/ProteinFuncPred.png)
 
-Input feature: sequence data
+
+Joint Feature-Label Embedding 
+
+Input feature: sequence data (using transformer) 
+
 Output label: hierarchical nodes on directed graphs
 
 ## Dependencies
