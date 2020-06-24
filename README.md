@@ -1,16 +1,23 @@
 # TALE
-Transformer-based protein function Annotation with joint feature-Label Embedding
+Transformer-based protein function Annotation with joint sequence-Label Embedding
 
 
 ![TALE Architecture](/ProteinFuncPred.png)
 
+
+Joint Feature-Label Embedding 
+
+Input feature: sequence data (using transformer) 
+
+Output label: hierarchical nodes on directed graphs
+
 ## Dependencies
 * TensorFlow >=1.13
-* Download [Diamond](http://www.diamondsearch.org/index.php) and put the executable file into TALE/diamond/
+* For TALE+ (TALE+Diamond), please download [Diamond](http://www.diamondsearch.org/index.php) and put the executable file into TALE/diamond/
 
 
 ## For users
-### If you want to use TALE+ for prediction, prepare your seqeunces file in the fasta format and go to src/ and run:
+### If you want to use TALE+ for prediction, prepare your sequence file in the fasta format and go to src/ and run:
 `python predict.py --input_seq $path_to_your_fasta_file --ontology on --outputpath $path_to_your_output_file`
 
 where on=mf,bp,cc for MFO,BPO and CCO, respectively.
@@ -28,7 +35,8 @@ where on=mf,bp,cc for MFO,BPO and CCO, respectively.
 The sequence file is a list, where each element is a directory having the following information:
 * 'ID': The ID of the sequence in Swiss-Prot
 * 'ac': The acession number of the sequence in Swiss-Prot
-* 'date': The data of the sequence released in Swiss-Prot
+* 'date': The date of the sequence released in Swiss-Prot
+* 'seq': The amino acid sequence
 * 'GO':  The GO annotations of the sequence
 #### Label 
 * The label file is a list, where each element is a list containing the indexes of labels (GO terms).
