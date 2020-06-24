@@ -16,7 +16,7 @@ import transformer_encode
 import sate
 #sys.path.insert(0, './HMCN/')
 #import HMCNF
-import deepgo_tf
+#import deepgo_tf
 
 sys.path.insert(0, 'Utils/')
 import hparam
