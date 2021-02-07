@@ -50,7 +50,7 @@ The ontology file is a directory, where each key is a GO term (e.g. 'GO:0030234'
 ### Training:
 In order to train the model, under src/, run:
 
-`python train.py --batch_size 32 --epochs 100 --lr 1e-3 --save_path ./log/ --ontology mf --data_path ../data/Gene_Ontology/EXP_Swiss_Prot/ --regular_lambda 0`
+`python train.py --batch_size 32 --epochs 100 --lr 1e-3 --save_path ./log/ --ontology mf --data_path ../data/ --regular_lambda 0`
 
 The above example is to train a model with 32 batch size, 100 epochs, 1e-3 learning rate, MFO ontology, 0 lambda value, with training data path at '../data/Gene_Ontology/EXP_Swiss_Prot/' and save the trained model in './log/'.
 
