@@ -28,7 +28,7 @@ where on=mf,bp,cc for MFO,BPO and CCO, respectively.
 * Data/Gene_Ontology/EXP_Swiss_Prot/train_label_mf: The training label file for MFO
 * Data/Gene_Ontology/EXP_Swiss_Prot/test_seq_mf: The test sequence file for MFO
 * Data/Gene_Ontology/EXP_Swiss_Prot/test_label_mf: The test label file for MFO
-* Data/Gene_Ontology/EXP_Swiss_Prot/mf_on_1.pickle: The ontology file for MFO
+* Data/Gene_Ontology/EXP_Swiss_Prot/mf_go_1.pickle: The ontology file for MFO
 
 ### Data formats:
 #### Sequence
