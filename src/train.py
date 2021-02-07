@@ -16,7 +16,7 @@ import transformer_encode
 import sate
 #sys.path.insert(0, './HMCN/')
 #import HMCNF
-#import deepgo_tf
+import deepgo_tf
 
 sys.path.insert(0, 'Utils/')
 import hparam
@@ -26,6 +26,17 @@ import metric
 import tensorflow as tf
 flags = tf.flags
 logging = tf.logging
+
+
+def cut(a, maxlen):
+   b=[]
+   for i in a:
+      if len(i)>maxlen:
+          start = np.random.randint(i-maxlen+1)
+          b.append(i[start: start+maxlen])
+      else:
+          b.append(i)
+   return b
 
 
 class HMC_models(object):
@@ -86,6 +97,7 @@ class HMC_models(object):
 			loss = self.loss(outs, pred_out, 'bc')
 
 			print ("loss", loss.shape)
+
 			return_box.append(loss)
 			return_box.append(pred_out)
 		elif hparams['main_model'] == 'SALT':
@@ -126,6 +138,8 @@ class HMC_models(object):
 
 		else:
 			raise ValueError("couldnt find the main model.")
+		if len (return_box)<5:
+			return_box.append(tf.constant([0]))
 		return return_box
 
 	def loss(self, ytrue, ypred, loss_type):
@@ -210,7 +224,7 @@ class HMC_models(object):
 				print ("epoch %d begins:" %(resume_epoch+epoch+1))
 				print ("#iterations:", iterations)
 				for ite in range(iterations):
-					x = train_x[ite*batch_size: (ite+1)*batch_size]
+					x = cut(train_x[ite*batch_size: (ite+1)*batch_size], hparams['MAXLEN'])
 					#y = sparse_to_dense(data[1][ite*batch_size: (ite+1)*batch_size] ,hparams['nb_classes'])
 					y = train_y[ite*batch_size: (ite+1)*batch_size]
 
@@ -222,7 +236,7 @@ class HMC_models(object):
 				sepoch_train_loss /= iterations
 
 				
-				if((epoch+1)%5==0):
+				if((epoch)%1==0):
 
 					
 					pred_scores=[]
@@ -238,13 +252,21 @@ class HMC_models(object):
 					sepoch_val_loss/=iterations
 
 					print ("epoch %d, train_loss: %.3f val_loss: %.3f" %(epoch+resume_epoch+1, sepoch_train_loss, sepoch_val_loss))
+					#if iterations*batch_size<len(val_x):
+					#	x= val_x[iterations*batch_size: len(val_x)]
+					#	y= val_y[iterations*batch_size: len(val_x)]
+					#	val_loss, pred_score = sess.run([holder_list[2], holder_list[3]], {holder_list[0]: x, holder_list[1]: y})
+					#	pred_scores.extend(pred_score)
+
 					
 					fmax, smin, auprc = metric.main(val_y[:len(pred_scores)], pred_scores, hparams)
 					with open(hparams['save_path']+"/val_log", "a") as f:
-						f.write("%d %.3f %.3f %.3f %.3f\n" %(epoch+resume_epoch+1, sepoch_val_loss, fmax, smin, auprc))					
+						f.write("%d %.3f %.3f %.3f %.3f\n" %(epoch+resume_epoch+1, sepoch_val_loss, fmax, smin, auprc))		
+					print ("epoch %d %.3f %.3f %.3f %.3f\n" %(epoch+resume_epoch+1, sepoch_val_loss, fmax, smin, auprc))		
 					
-
+					#np.save(hparams['save_path']+"/preds_e"+str(epoch+resume_epoch+1), preds)
 					# save_model..
+				if((epoch)%5==0):
 					saver.save(sess, hparams['save_path']+"/ckpt_"+"epoch_"+ \
 						str(epoch+resume_epoch+1))
 					with open(hparams['save_path']+"/ckpt_"+"epoch_"+ \
@@ -296,15 +318,18 @@ if __name__== "__main__":
 	flags.DEFINE_integer("batch_size", 32, "e")
 	flags.DEFINE_integer("epochs", 100, "e")
 	flags.DEFINE_float("lr", 1e-3, "e")
-	flags.DEFINE_string("save_path", './log/', "model savepath")
+	flags.DEFINE_string("save_path", 'talerevision/', "model savepath")
 	flags.DEFINE_string("resume_model", None, "")
 	flags.DEFINE_string("ontology", 'mf', "e")
 	flags.DEFINE_integer("nb_classes", None, "e")
 	flags.DEFINE_bool("label_embed", True, "e")
-	flags.DEFINE_string("data_path", '../data/Gene_Ontology/EXP_Swiss_Prot/', "path_to_store_data")
+	flags.DEFINE_string("data_path", '../data/Gene_Ontology/tf_version/', "path_to_store_data")
 	flags.DEFINE_float("regular_lambda", 0, "e")
-	flags.DEFINE_string("cut_num", '1', "the cutoff number for the number of sequences per GO term")
-	flags.DEFINE_float("l2_lambda", 0, "lambda for hierachial regulization")
+	flags.DEFINE_string("cut_num", '1', "e")
+	flags.DEFINE_float("l2_lambda", 0, "e")
+	flags.DEFINE_integer("num_heads", 2, "e")
+	flags.DEFINE_integer("num_hidden_layers", 6, "e")
+	flags.DEFINE_integer("hidden_size", 64, "e")
 	FLAGS = flags.FLAGS
 
 

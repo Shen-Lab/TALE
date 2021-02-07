@@ -10,14 +10,14 @@ def auprc(ytrue, ypred):
 
 
 
-def main(ytrue1, ypred1, hparams):
+def main(ytrue1, ypred1, hparams=None):
 
 	# 
 	fmax = 0
 	smin=100000.0
 	prec_list = []
 	recall_list=[]
-	ic = np.load(hparams['data_path']+'/'+hparams['ontology']+'_ic.npy')
+	#ic = np.load(hparams['data_path']+'/'+hparams['ontology']+'_ic.npy')
 	#print ("ic shape: ", ic.shape)
 	#print (ic)
 	#np.savetxt('ic', ic)
@@ -44,26 +44,26 @@ def main(ytrue1, ypred1, hparams):
 
 
 		#---------computing s1 and update smin if possible
-		ru = ytrue- tp_matrix
-		mi = pred_labels - tp_matrix
+		#ru = ytrue- tp_matrix
+		#mi = pred_labels - tp_matrix
 
 		#print (pred_labels, ytrue, 'hehe')
 		#print (tp_matrix, ru, mi, t)
 		
 				
 		
-		ruu = np.mean( np.matmul(ru, ic))
-		mii = np.mean( np.matmul(mi, ic))
+		#ruu = np.mean( np.matmul(ru, ic))
+		#mii = np.mean( np.matmul(mi, ic))
 		
-		s1 = np.sqrt(ruu**2 +mii**2)
-		smin=min(smin, s1)
+		#s1 = np.sqrt(ruu**2 +mii**2)
+		#smin=min(smin, s1)
 
 
 		#---------computing f1 and update fmax if possible
 		avgprs=[]
 
 		for i in range(len(tp)):
-			if tp[i]!=0:
+			if tpfp[i]!=0:
 				avgprs.append(tp[i]/float(tpfp[i]))
 
 		if len(avgprs)==0:
@@ -91,9 +91,8 @@ def main(ytrue1, ypred1, hparams):
 	# print (auc(recall_list,prec_list))
 	# print(f'AUPR: {aupr:0.3f}')
 
-	print (fmax)
 
-	return fmax, smin, auprc(np.array(ytrue).flatten(), np.array(ypred).flatten())
+	return fmax, 0., auprc(np.array(ytrue).flatten(), np.array(ypred).flatten())
 
 if __name__=='__main__':
 	ytrue=np.array([[0,1,1,0], [1,0,1,0]])

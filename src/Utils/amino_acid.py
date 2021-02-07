@@ -1,9 +1,7 @@
 amino_acid = ['A', 'R', 'N', 'D',  'C', 'E', 'Q', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V']
-AAINDEX = {}
 import numpy as np
-
-for i in range(len(amino_acid)):
-    AAINDEX[amino_acid[i]] = i + 1
+AA_indx={'pad': 0, 'A': 1, 'R':2, 'N':3, 'D':4,  'C':5, 'E':6, 'Q':7, 'G':8, 'H':9, 'I':10,\
+ 'L':11, 'K':12, 'M':13, 'F':14, 'P':15, 'S':16, 'T':17, 'W':18, 'Y':19, 'V':20, 'B':21, 'O':22, 'U':23, 'X':24, 'Z':25}
     
 def Nature_seq(seq):
 
@@ -32,12 +30,14 @@ def seq_length_plot(seq,name='seq_dis', maxlen=2000):
 
 
 # interger encoding and padding
-def to_intger(seq):
-    vec = np.zeros((MAXLEN), dtype=np.int32)
-    for i in range(len(seq)):
-        vec[i] = np.where(seq[i], amino_acid)+1
-    
-    return vec
+def to_int(seq, hparam):
+	vec=[]
+	for i in seq:
+		vec.append(AA_indx[i])
+	for i in range(len(vec), hparam['MAXLEN']):
+		vec.append(0)	
+	return np.array(vec)
+
 
 
 def to_onehot(seq, hparam, start=0):
@@ -50,7 +50,7 @@ def to_onehot(seq, hparam, start=0):
     return onehot
 
 
-def to_int(seq, hparam):
+def to_int1(seq, hparam):
 
     out =  np.zeros(hparam['MAXLEN'], dtype=np.int32)
     for i in range(len(seq)):

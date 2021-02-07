@@ -60,17 +60,14 @@ def params(flags):
 		hparams['nb_classes']=len(go_dag)
 		
 
-	flags.DEFINE_integer("vocab_size", 21, "e")
+	flags.DEFINE_integer("vocab_size", 26, "e")
 	hparams['vocab_size'] = FLAGS.vocab_size
 
 
 	#---------------------------------------------------Transformer HParams:
-	flags.DEFINE_integer("hidden_size", 64, "e")
 	hparams['hidden_size'] = FLAGS.hidden_size
 
-	flags.DEFINE_integer("num_hidden_layers", 6, "e")
 	hparams['num_hidden_layers'] = FLAGS.num_hidden_layers
-	flags.DEFINE_integer("num_heads", 2, "e")
 	hparams['num_heads'] = FLAGS.num_heads
 	flags.DEFINE_bool("train", True, "e")
 	hparams['train'] = FLAGS.train
