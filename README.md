@@ -23,12 +23,12 @@ Output label: hierarchical nodes on directed graphs
 where on=mf,bp,cc for MFO,BPO and CCO, respectively.
 
 ## For developers
-### Training and test data:
-* Data/Gene_Ontology/EXP_Swiss_Prot/train_seq_mf: The training sequence file for MFO 
-* Data/Gene_Ontology/EXP_Swiss_Prot/train_label_mf: The training label file for MFO
-* Data/Gene_Ontology/EXP_Swiss_Prot/test_seq_mf: The test sequence file for MFO
-* Data/Gene_Ontology/EXP_Swiss_Prot/test_label_mf: The test label file for MFO
-* Data/Gene_Ontology/EXP_Swiss_Prot/mf_go_1.pickle: The ontology file for MFO
+### Our training and test data:
+* Data/train_seq_mf: The training sequence file for MFO 
+* Data/train_label_mf: The training label file for MFO
+* Data/test_seq_mf: The test sequence file for MFO
+* Data/test_label_mf: The test label file for MFO
+* Data/mf_go_1.pickle: The ontology file for MFO
 
 ### Data formats:
 #### Sequence
@@ -55,7 +55,7 @@ In order to train the model, under src/, run:
 The above example is to train a model with 32 batch size, 100 epochs, 1e-3 learning rate, MFO ontology, 0 lambda value, with training data path at '../data/Gene_Ontology/EXP_Swiss_Prot/' and save the trained model in './log/'.
 
 ### Trained models:
-The trained models are in 'trained_models/'. (e.g. model1_mf* is the model1 on MFO)
+The trained models are in 'trained_models/'. (e.g. Our_modelk_MFO* is the kth best model on MFO trained on our dataset; CAFA3_modelk_MFO* is the kth best model on MFO trained on CAFA3 dataset.)
 
 
 ## Citation
