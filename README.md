@@ -59,6 +59,7 @@ The trained models are in 'trained_models/'. (e.g. Our_modelk_MFO* is the kth be
 
 
 ## Citation
+```
 @article{10.1093/bioinformatics/btab198,
     author = {Cao, Yue and Shen, Yang},
     title = "{TALE: Transformer-based protein function Annotation with joint sequence–Label Embedding}",
@@ -71,7 +72,7 @@ The trained models are in 'trained_models/'. (e.g. Our_modelk_MFO* is the kth be
     note = {btab198},
     eprint = {https://academic.oup.com/bioinformatics/advance-article-pdf/doi/10.1093/bioinformatics/btab198/36671287/btab198.pdf},
 }
-
+```
 
 
 ## Contact:
