@@ -23,12 +23,13 @@ Output label: hierarchical nodes on directed graphs
 where on=mf,bp,cc for MFO,BPO and CCO, respectively.
 
 ## For developers
-### Our training and test data:
-* Data/train_seq_mf: The training sequence file for MFO 
-* Data/train_label_mf: The training label file for MFO
-* Data/test_seq_mf: The test sequence file for MFO
-* Data/test_label_mf: The test label file for MFO
-* Data/mf_go_1.pickle: The ontology file for MFO
+### Training and test data:
+* Under 'Data/CAFA3' and 'Data/ours'
+* train_seq_mf: The training sequence file for MFO 
+* train_label_mf: The training label file for MFO
+* test_seq_mf: The test sequence file for MFO
+* test_label_mf: The test label file for MFO
+* mf_go_1.pickle: The ontology file for MFO
 
 ### Data formats:
 #### Sequence
