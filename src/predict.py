@@ -14,13 +14,13 @@ import os
 def default_trained_model(on):
 	trained_models=[]
 	if on=='mf':
-		trained_models = ['../trained_models/app/mf/ckpt_epoch_180', '../trained_models/app/mf_1/ckpt_epoch_180', '../trained_models/app/mf_10/ckpt_epoch_180']
+		trained_models = ['../trained_model/Our_model1_MFO', '../trained_model/Our_model2_MFO', '../trained_model/Our_model3_MFO']
 
 	elif on=='bp':
-		trained_models = ['../trained_models/app/bp_0.5/ckpt_epoch_55', '../trained_models/app/bp/ckpt_epoch_55', '../trained_models/app/bp_10/ckpt_epoch_55']
+		trained_models = ['../trained_model/Our_model1_BPO', '../trained_model/Our_model2_BPO', '../trained_model/Our_model3_BPO']
 
 	elif on=='cc':
-		trained_models = ['../trained_models/app/cc_1/ckpt_epoch_189', '../trained_models/app/cc/ckpt_epoch_189', '../trained_models/app/cc_10/ckpt_epoch_189'] 
+		trained_models = ['../trained_model/Our_model1_CCO', '../trained_model/Our_model2_CCO', '../trained_model/Our_model3_CCO'] 
 
 	return trained_models
 
@@ -29,8 +29,8 @@ def main():
         parser.add_argument('--trained_model', default=None, type=str)
         parser.add_argument('--on', default=None, type=str)
         parser.add_argument('--fasta', default=None, type=str)
-        parser.add_argument('--out', default='../Resultours/output1', type=str)
-        parser.add_argument('--data', default='../data/Gene_Ontology/app_version/', type=str)
+        parser.add_argument('--out', default='./output1', type=str)
+        parser.add_argument('--data', default='../data/ours/', type=str)
        
         args = parser.parse_args()
 
@@ -63,7 +63,7 @@ def main():
 	
         preds_tale_list=[]
         for model in args.trained_model:	
-             preds_tale_list.append( predict_trainedmodel(model, seq))
+             preds_tale_list.append( predict_trainedmodel(model, seq, args.data))
         preds_tale =  (np.array(preds_tale_list)).mean(axis=0)
         print ((np.array(preds_tale_list)).shape, preds_tale.shape)
         preds_diamond = predict_diamond(args.fasta, args.traindnmd, seq, len(preds_tale[0]), args.on, args.data)
@@ -123,7 +123,6 @@ def predict_diamond(fasta, train_dnmd, seq, nlabels, on, data_path):
        else:
           test_bits[line[0]] = [float(line[2])]
           test_train[line[0]] = [line[1]]
-       #print (lines) 
 
 
 
@@ -135,7 +134,6 @@ def predict_diamond(fasta, train_dnmd, seq, nlabels, on, data_path):
 
                 for j in range(len(test_train[s])):
                   temp = np.zeros(nlabels)
-                  #print (s, j, test_train[str(s)])
                   temp[ train_seq[int(test_train[s][j])]['label']  ] = 1.0
                   probs+= weights[j]* temp
 
@@ -144,7 +142,7 @@ def predict_diamond(fasta, train_dnmd, seq, nlabels, on, data_path):
    return np.array(preds_score)
 
 
-def predict_trainedmodel(model_path, seq_model, batch_size=None):
+def predict_trainedmodel(model_path, seq_model, data_path, batch_size=None):
 	# predict GO terms through trained deep learning  model
 	# argvs: model_path: the path to the trained model
 	#	 seq_model: a dic stores the input sequences
@@ -154,9 +152,9 @@ def predict_trainedmodel(model_path, seq_model, batch_size=None):
 	if model_path==None:
 		raise ValueError("Must specify a model to evaluate.")
 
-
 	with open(model_path+".hparam", "rb") as f:
 		hparams=pickle.load(f)
+	hparams['data_path'] = data_path
 
 	if batch_size != None:
 		hparams['batch_size']=batch_size

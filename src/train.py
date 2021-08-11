@@ -14,9 +14,6 @@ import embedding_layer
 import model_utils
 import transformer_encode
 import sate
-#sys.path.insert(0, './HMCN/')
-#import HMCNF
-import deepgo_tf
 
 sys.path.insert(0, 'Utils/')
 import hparam
@@ -85,22 +82,7 @@ class HMC_models(object):
 		outs   = tf.placeholder(shape=(self.hparams['batch_size'], self.hparams['nb_classes']), dtype=tf.int32)
 		return_box = [inputs, outs]
 
-		if hparams['main_model'] == 'HMCN_F':
-			self.model = HMCNF(hparams)
-		elif hparams['main_model'] == 'DeepGOPlus':
-
-			one_hot_encoding = tf.one_hot(inputs, hparams['vocab_size'], dtype=tf.float32)
-
-			model = deepgo_tf.DeepGOplus(hparams)
-			pred_out = model.create_model(one_hot_encoding)
-
-			loss = self.loss(outs, pred_out, 'bc')
-
-			print ("loss", loss.shape)
-
-			return_box.append(loss)
-			return_box.append(pred_out)
-		elif hparams['main_model'] == 'SALT':
+		if hparams['main_model'] == 'SALT':
 			encoder_inputs = self.Embedding(inputs)
 			encoder_outputs = self.Encoder(encoder_inputs)
 
@@ -154,7 +136,6 @@ class HMC_models(object):
 		ind_fa = tf.constant(label_regular.transpose()[0])
 		ind_child = tf.constant(label_regular.transpose()[1])
 
-		#flat_out = tf.flatten(pred_out)
 		print (ind_fa.shape, pred_out.shape)		
 		r1_fa = tf.gather(pred_out, ind_fa,axis=1)
 		r1_child = tf.gather(pred_out, ind_child, axis=1)
@@ -178,8 +159,6 @@ class HMC_models(object):
 			#exit(0)
 			return out
 			
-		#mirrored_strategy = tf.distribute.MirroredStrategy(devices=["/cpu:0", "/cpu:1"])
-		#with mirrored_strategy.scope():
 		with tf.device('/gpu:0'):
 			holder_list = self.Main_model()  #------------holder_list: [model_input, model_output, loss]
 			# optimization
@@ -193,7 +172,6 @@ class HMC_models(object):
 		train_y  = sparse_to_dense(data[1] ,hparams['nb_classes'])
 		val_x = data[2]
 		val_y= sparse_to_dense(data[3], hparams['nb_classes'])
-		#print (len(train_x), len(val_x), len(val_y))	
 		val_list=[v for v in tf.global_variables()]
 		saver = tf.train.Saver(val_list, max_to_keep=None)
 		
@@ -225,7 +203,6 @@ class HMC_models(object):
 				print ("#iterations:", iterations)
 				for ite in range(iterations):
 					x = cut(train_x[ite*batch_size: (ite+1)*batch_size], hparams['MAXLEN'])
-					#y = sparse_to_dense(data[1][ite*batch_size: (ite+1)*batch_size] ,hparams['nb_classes'])
 					y = train_y[ite*batch_size: (ite+1)*batch_size]
 
 					train_loss ,_ , regular_loss= sess.run([holder_list[2], train_op, holder_list[4]], {holder_list[0]: x, holder_list[1]: y})
@@ -252,11 +229,6 @@ class HMC_models(object):
 					sepoch_val_loss/=iterations
 
 					print ("epoch %d, train_loss: %.3f val_loss: %.3f" %(epoch+resume_epoch+1, sepoch_train_loss, sepoch_val_loss))
-					#if iterations*batch_size<len(val_x):
-					#	x= val_x[iterations*batch_size: len(val_x)]
-					#	y= val_y[iterations*batch_size: len(val_x)]
-					#	val_loss, pred_score = sess.run([holder_list[2], holder_list[3]], {holder_list[0]: x, holder_list[1]: y})
-					#	pred_scores.extend(pred_score)
 
 					
 					fmax, smin, auprc = metric.main(val_y[:len(pred_scores)], pred_scores, hparams)
@@ -264,7 +236,6 @@ class HMC_models(object):
 						f.write("%d %.3f %.3f %.3f %.3f\n" %(epoch+resume_epoch+1, sepoch_val_loss, fmax, smin, auprc))		
 					print ("epoch %d %.3f %.3f %.3f %.3f\n" %(epoch+resume_epoch+1, sepoch_val_loss, fmax, smin, auprc))		
 					
-					#np.save(hparams['save_path']+"/preds_e"+str(epoch+resume_epoch+1), preds)
 					# save_model..
 				if((epoch)%5==0):
 					saver.save(sess, hparams['save_path']+"/ckpt_"+"epoch_"+ \
@@ -318,12 +289,12 @@ if __name__== "__main__":
 	flags.DEFINE_integer("batch_size", 32, "e")
 	flags.DEFINE_integer("epochs", 100, "e")
 	flags.DEFINE_float("lr", 1e-3, "e")
-	flags.DEFINE_string("save_path", 'talerevision/', "model savepath")
+	flags.DEFINE_string("save_path", './', "model savepath")
 	flags.DEFINE_string("resume_model", None, "")
 	flags.DEFINE_string("ontology", 'mf', "e")
 	flags.DEFINE_integer("nb_classes", None, "e")
 	flags.DEFINE_bool("label_embed", True, "e")
-	flags.DEFINE_string("data_path", '../data/Gene_Ontology/tf_version/', "path_to_store_data")
+	flags.DEFINE_string("data_path", '../data/ours/', "path_to_store_data")
 	flags.DEFINE_float("regular_lambda", 0, "e")
 	flags.DEFINE_string("cut_num", '1', "e")
 	flags.DEFINE_float("l2_lambda", 0, "e")
@@ -342,7 +313,6 @@ if __name__== "__main__":
 			hparams=pickle.load(f)
 		hparams['resume_model']=resume_model
 
-	#hparams['data_path'] = FLAGS.data_path
 	model1 = HMC_models(hparams)
 	model1.train()
 

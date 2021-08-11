@@ -12,23 +12,17 @@ def params(flags):
 	hparams['MAXLEN'] = 1000
 
 	#--------------------------------------------------training HParams:
-	#flags.DEFINE_string("main_model", "DeepGOPlus", "e")
 	hparams['main_model'] = FLAGS.main_model	
 
-	#flags.DEFINE_integer("batch_size", 256, "e")
 	hparams['batch_size'] = FLAGS.batch_size
 
-	#flags.DEFINE_integer("epochs", 100, "e")
 	hparams['epochs'] = FLAGS.epochs
 
-	#flags.DEFINE_float("lr", 1e-5, "e")
 	hparams['lr'] = FLAGS.lr
 	
-	#flags.DEFINE_string("save_path", './log/', "model savepath")
 	hparams['save_path'] = FLAGS.save_path
 
 	
-	#flags.DEFINE_string("resume_model", None, "")
 	hparams['resume_model'] = FLAGS.resume_model
 
 	#------------------------------------------------Protein Function Predition HParams:
@@ -102,35 +96,11 @@ def params(flags):
 	hparams['filter_size'] =64
 
 
-	# HMCN_F param:
-	'''
-	hparams['hierachy_levels'] = 3 #---number of hierachy levels
-	hparams['number_of_classes'] = 509 #----number of classes
-	hparams['HMCN_F_input_features'] = 16*200 #----number of input features
-	hparams['HMCN_F_ag_list'] =[384, 384, 384] #---number of neurons for each global layer
-	hparams['HMCN_F_al_list'] = [4, 200, 305]  #---number of neurons for each local output layer
-	hparams['HMCN_F_drop_rate'] = 0.3
-	hparams['HMCN_F_beta'] =0.5
-	hparams['HMCN_F_lambda'] =  0.1
-	'''
 
 	# TPU 
 	hparams['use_tpu']  = False
 	hparams['allow_ffn_pad']=True
 
-
-
-	# initializer_gain=1.0,  # Used in trainable variable initialization.
- #    vocab_size=33708,  # Number of tokens defined in the vocabulary file.
- #    hidden_size=512,  # Model dimension in the hidden layers.
- #    num_hidden_layers=6,  # Number of layers in the encoder and decoder stacks.
- #    num_heads=8,  # Number of heads to use in multi-headed attention.
- #    filter_size=2048,  # Inner layer dimension in the feedforward network.
-
- #    # Dropout values (only used when training)
- #    layer_postprocess_dropout=0.1,
- #    attention_dropout=0.1,
- #    relu_dropout=0.1,
 
 	return  hparams
 
@@ -139,11 +109,11 @@ if __name__== "__main__":
 
 	flags = tf.flags
 	#--------------------------------------------------training HParams:
-	flags.DEFINE_string("main_model", "DeepGOPlus", "e")
+	flags.DEFINE_string("main_model", "SALT", "e")
 	flags.DEFINE_integer("batch_size", 256, "e")
 	flags.DEFINE_integer("epochs", 20, "e")
 	flags.DEFINE_float("lr", 1e-5, "e")
-	flags.DEFINE_string("save_path", '../trained_models/deepgoplus/cc/', "model savepath")
+	flags.DEFINE_string("save_path", '../trained_models/', "model savepath")
 	flags.DEFINE_string("resume_model", None, "")
 	flags.DEFINE_string("ontology", 'cc', "e")
 	flags.DEFINE_integer("nb_classes", 1070, "e")
