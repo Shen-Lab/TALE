@@ -1,6 +1,6 @@
 # created 1/9/2020
 # author: Yue Cao
-
+# The main training program for TALE.
 
 import numpy as np
 import sys
@@ -196,7 +196,6 @@ class HMC_models(object):
 			for epoch in range(hparams['epochs']):
 
 				sepoch_train_loss = 0.
-				sepoch_val_loss = 0.
 
 				iterations = int((len(train_x)) // hparams['batch_size'])
 				print ("epoch %d begins:" %(resume_epoch+epoch+1))
@@ -211,39 +210,6 @@ class HMC_models(object):
 					print ("iteration %d/%d totaltrain_loss: %.3f regular loss %.3f" %(ite+1, iterations, train_loss, regular_loss))
 
 				sepoch_train_loss /= iterations
-
-				
-				if((epoch)%1==0):
-
-					
-					pred_scores=[]
-					iterations = int(len(val_x) // hparams['batch_size'])
-					for ite in range(iterations):
-						x= val_x[ite*batch_size: (ite+1)*batch_size]
-						y= val_y[ite*batch_size: (ite+1)*batch_size]
-						val_loss, pred_score = sess.run([holder_list[2], holder_list[3]], {holder_list[0]: x, holder_list[1]: y})
-						sepoch_val_loss+=val_loss
-						pred_scores.extend(pred_score)
-						print ("iteration %d/%d val_loss: %.3f" %(ite+1, iterations, val_loss))
-
-					sepoch_val_loss/=iterations
-
-					print ("epoch %d, train_loss: %.3f val_loss: %.3f" %(epoch+resume_epoch+1, sepoch_train_loss, sepoch_val_loss))
-
-					
-					fmax, smin, auprc = metric.main(val_y[:len(pred_scores)], pred_scores, hparams)
-					with open(hparams['save_path']+"/val_log", "a") as f:
-						f.write("%d %.3f %.3f %.3f %.3f\n" %(epoch+resume_epoch+1, sepoch_val_loss, fmax, smin, auprc))		
-					print ("epoch %d %.3f %.3f %.3f %.3f\n" %(epoch+resume_epoch+1, sepoch_val_loss, fmax, smin, auprc))		
-					
-					# save_model..
-				if((epoch)%5==0):
-					saver.save(sess, hparams['save_path']+"/ckpt_"+"epoch_"+ \
-						str(epoch+resume_epoch+1))
-					with open(hparams['save_path']+"/ckpt_"+"epoch_"+ \
-						str(epoch+resume_epoch+1)+".hparam","wb" ) as f:
-						pickle.dump(hparams,f)
-
 				with open(hparams['save_path']+"/train_log", "a") as f:
 					f.write("%d %.6f\n" %(epoch+resume_epoch+1, sepoch_train_loss))
 
@@ -251,6 +217,39 @@ class HMC_models(object):
 				train_z = list(zip(train_x, train_y))
 				shuffle(train_z)
 				train_x, train_y = zip(*train_z)
+
+			
+			#  run evaluation..............
+			epoch = hparams['epochs']-1
+			pred_scores=[]
+			sepoch_val_loss = 0.
+			iterations = int(len(val_x) // hparams['batch_size'])
+			for ite in range(iterations):
+				x= val_x[ite*batch_size: (ite+1)*batch_size]
+				y= val_y[ite*batch_size: (ite+1)*batch_size]
+				val_loss, pred_score = sess.run([holder_list[2], holder_list[3]], {holder_list[0]: x, holder_list[1]: y})
+				sepoch_val_loss+=val_loss
+				pred_scores.extend(pred_score)
+				print ("iteration %d/%d val_loss: %.3f" %(ite+1, iterations, val_loss))
+
+			sepoch_val_loss/=iterations
+
+			print ("epoch %d, train_loss: %.3f val_loss: %.3f" %(epoch+resume_epoch+1, sepoch_train_loss, sepoch_val_loss))
+
+			
+			fmax, smin, auprc = metric.main(val_y[:len(pred_scores)], pred_scores, hparams)
+			with open(hparams['save_path']+"/val_log", "a") as f:
+				f.write("%d %.3f %.3f %.3f %.3f\n" %(epoch+resume_epoch+1, sepoch_val_loss, fmax, smin, auprc))		
+			print ("epoch %d %.3f %.3f %.3f %.3f\n" %(epoch+resume_epoch+1, sepoch_val_loss, fmax, smin, auprc))		
+			
+			# save_model..................
+			saver.save(sess, hparams['save_path']+"/ckpt_"+"epoch_"+ \
+				str(epoch+resume_epoch+1))
+			with open(hparams['save_path']+"/ckpt_"+"epoch_"+ \
+				str(epoch+resume_epoch+1)+".hparam","wb" ) as f:
+				pickle.dump(hparams,f)
+
+
 
 
 	def data_load(self, path):
