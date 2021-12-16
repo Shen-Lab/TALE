@@ -29,7 +29,7 @@ def cut(a, maxlen):
    b=[]
    for i in a:
       if len(i)>maxlen:
-          start = np.random.randint(i-maxlen+1)
+          start = np.random.randint(0, len(i)-maxlen+1)
           b.append(i[start: start+maxlen])
       else:
           b.append(i)
@@ -217,6 +217,11 @@ class HMC_models(object):
 				train_z = list(zip(train_x, train_y))
 				shuffle(train_z)
 				train_x, train_y = zip(*train_z)
+				
+				if((epoch)%1==0):
+					saver.save(sess, hparams['save_path']+"/ckpt_"+"epoch_"+str(epoch+resume_epoch+1))
+					with open(hparams['save_path']+"/ckpt_"+"epoch_"+str(epoch+resume_epoch+1)+".hparam","wb" ) as f:
+						pickle.dump(hparams,f)
 
 			
 			#  run evaluation..............
