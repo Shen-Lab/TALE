@@ -1,1 +1,1 @@
-Please download [Diamond](http://www.diamondsearch.org/index.php) and put the executable file here.
+Please download [DIAMOND](https://github.com/bbuchfink/diamond) and put the executable file here.
