@@ -123,7 +123,7 @@ class Attention(tf.layers.Layer):
 
     # Scale q to prevent the dot product between q and k from growing too large.
     depth = (self.hidden_size // self.num_heads)
-    q *= depth ** -0.5
+    q /= depth ** -0.5
 
     # Calculate dot product attention
     logits = tf.matmul(q, k, transpose_b=True)
