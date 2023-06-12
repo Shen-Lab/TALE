@@ -18,7 +18,7 @@ Output label: hierarchical nodes on directed graphs
 
 ## For users
 ### If you want to use TALE+ for prediction, prepare your sequence file in the fasta format and go to src/ and run:
-`python predict.py --input_seq $path_to_your_fasta_file --ontology on --outputpath $path_to_your_output_file`
+`python predict.py --fasta $path_to_your_fasta_file --on on --out $path_to_your_output_file`
 
 where on=mf,bp,cc for MFO,BPO and CCO, respectively.
 
