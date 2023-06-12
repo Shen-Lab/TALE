@@ -95,11 +95,11 @@ class HMC_models(object):
 					print (out1)
 					
 					out2 = tf.layers.Dense(hparams['nb_classes'], activation='sigmoid', name='dense_out')(out1)
-					return out2
+					return out2, out1
 
 			if (hparams['label_embed']==False):
 
-				pred_out = output_layer(encoder_outputs)
+				pred_out, final_emb = output_layer(encoder_outputs)
 				loss = self.loss(outs, pred_out, 'bc')
 
 				return_box.append(loss)
@@ -107,6 +107,8 @@ class HMC_models(object):
 			else:
 				label_embed= sate.label_embedding(hparams)
 				out1 = sate.joint_similarity(encoder_outputs,label_embed,hparams)
+				final_emb = out1
+
 				pred_out=tf.layers.Dense(hparams['nb_classes'], activation='sigmoid', name='dense_out')(out1)
 				print ('pred_out', pred_out.shape)
 				loss = self.loss(outs, pred_out, 'bc')
@@ -122,6 +124,10 @@ class HMC_models(object):
 			raise ValueError("couldnt find the main model.")
 		if len (return_box)<5:
 			return_box.append(tf.constant([0]))
+
+		return_box.append(encoder_outputs) # sequence embedding (by SZ)
+		return_box.append(final_emb) # final embedding (by SZ)
+
 		return return_box
 
 	def loss(self, ytrue, ypred, loss_type):
