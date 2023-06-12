@@ -22,6 +22,11 @@ Output label: hierarchical nodes on directed graphs
 
 where on=mf,bp,cc for MFO,BPO and CCO, respectively.
 
+### To get the sequence representation, prepare your sequence file in the fasta format and go to src/ and run:
+`python seq_embedding.py --fasta $path_to_your_fasta_file --on on --out $path_to_your_output_file`
+
+The output file is a dictionary that contain two keys, "seq_emb" and "final", while the former refers to the token-wise embedding with a shape of \[seq_num, 1000 (max_seq_len), dim] and the latter refers to the sequence-wise embedding before the output layer which has a shape of \[seq_num, dim].
+
 ## For developers
 ### Training and test data:
 * Under 'Data/CAFA3' and 'Data/ours'
