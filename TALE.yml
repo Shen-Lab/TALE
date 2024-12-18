@@ -155,5 +155,3 @@ dependencies:
     - scikit-learn==1.0.2
     - tensorflow-probability==0.7.0
     - threadpoolctl==3.1.0
-prefix: /scratch/user/shaowen1994/.conda/envs/tf1.14
-
